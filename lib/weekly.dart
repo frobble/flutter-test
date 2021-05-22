@@ -19,7 +19,6 @@ class Weekly extends StatefulWidget {
 }
 
 class _Weekly extends State<Weekly> {
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -52,17 +51,13 @@ class _Weekly extends State<Weekly> {
     );
   }
 
-
   Container buildWeekList() {
-    return Container(
-        child: WeekTable()
-    );
+    return Container(child: WeekTable());
   }
 
   blubb() {
     print('Hello');
   }
-
 
   final items = List<String>.generate(7, (i) => "Day $i");
 }
@@ -77,6 +72,10 @@ class WeekTable extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: DataTable(
+          sortAscending: false,
+          showCheckboxColumn: true,
+          checkboxHorizontalMargin: 1100,
+          sortColumnIndex: 0,
           columns: const <DataColumn>[
             DataColumn(
               label: Text(
@@ -97,19 +96,14 @@ class WeekTable extends StatelessWidget {
               ),
             ),
           ],
-
           rows: List<DataRow>.generate(
             21,
-              (int index) => DataRow(
-               color:MaterialStateProperty.resolveWith<Color>(
-                       (Set<MaterialState> states) {
-                     if ( data()[index].heading) return Colors.grey.shade300;
-                     return null;
-                   }),
+            (int index) => DataRow(
+              color: buildResolveWith(index),
               cells: <DataCell>[
                 DataCell(Text(data()[index].name)),
                 DataCell(Text(data()[index].hours.toString() + "h")),
-                DataCell(Text('Row $index')),
+                DataCell(Text('Row $index', style: TextStyle(fontSize: 20))),
               ],
             ),
           ),
@@ -117,15 +111,24 @@ class WeekTable extends StatelessWidget {
       ),
     );
   }
+
+  MaterialStateProperty<Color> buildResolveWith(int index) {
+    return MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+      if (data()[index].heading) return Colors.grey.shade300;
+      return null;
+    });
+  }
 }
 
 
+
 List<WeekDataItem> data() {
-  return List.generate(21, (i) =>
-       i % 3 == 0
-      ? WeekDataItem("Day " + (i / 3).toString(), 8, "desc", true)
-      : WeekDataItem("Entry " + (i % 3).toString(), 8, "desc", false)
-  );
+  return List.generate(
+      21,
+      (i) => i % 3 == 0
+          ? WeekDataItem("Day " + (i / 3).toString(), 8, "desc", true)
+          : WeekDataItem("Entry " + (i % 3).toString(), 8, "desc", false));
 }
 
 class WeekDataItem {
@@ -136,4 +139,3 @@ class WeekDataItem {
 
   WeekDataItem(this.name, this.hours, this.description, this.heading);
 }
-

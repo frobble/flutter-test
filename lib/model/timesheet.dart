@@ -20,27 +20,30 @@ class Timesheet {
   int weekOfYear;
   int year;
 
-  Timesheet(
-      {this.iId,
-        this.assignees,
-        this.currentUserIsReviewer,
-        this.currentUserIsReviewerForProject,
-        this.hours,
-        this.hoursFriday,
-        this.hoursMonday,
-        this.hoursThursday,
-        this.hoursTuesday,
-        this.hoursWednesday,
-        this.id,
-        this.protected,
-        this.rejected,
-        this.rejectReason,
-        this.review,
-        this.sheetUserDisplay,
-        this.sheetUserName,
-        this.startOfWeek,
-        this.weekOfYear,
-        this.year});
+  bool released;
+
+
+  Timesheet({
+      this.iId,
+      this.assignees,
+      this.currentUserIsReviewer,
+      this.currentUserIsReviewerForProject,
+      this.hours,
+      this.hoursFriday,
+      this.hoursMonday,
+      this.hoursThursday,
+      this.hoursTuesday,
+      this.hoursWednesday,
+      this.id,
+      this.protected,
+      this.rejected,
+      this.rejectReason,
+      this.review,
+      this.sheetUserDisplay,
+      this.sheetUserName,
+      this.startOfWeek,
+      this.weekOfYear,
+      this.year, this.released});
 
   Timesheet.fromJson(Map<String, dynamic> json) {
     iId = json['_id'] != null ? new Id.fromJson(json['_id']) : null;
