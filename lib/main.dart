@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app2/masterslaveprovider.dart';
+import 'package:flutter_app2/splitter.dart';
 import 'package:flutter_app2/weeklist.dart';
 import 'package:flutter_app2/weekly.dart';
+import 'package:provider/provider.dart';
 
 //import 'dart:html' as html;
 //import 'package:http/http.dart' as http;
@@ -25,13 +28,20 @@ class MyApp extends StatelessWidget {
     );
   }
 
-
   Widget _buildLayout() {
-    return Row(
-      children: [
-        Flexible(child: Weeklist(title: 'Stundenzettel')),
-        Flexible(child: Weekly(week: null)),
-      ],
-    );
+    return ChangeNotifierProvider(
+        create: (context) => MasterSlaveProvider(),
+        child: Consumer<MasterSlaveProvider>(
+          builder: (context, data, child) {
+            if (data.isWide(context)) {
+              return VerticalSplitView(
+                left: Weeklist(title: 'Stundenzettel', model: data),
+                right: Weekly(week: data.selected),
+              );
+            } else {
+              return Weeklist(title: 'Stundenzettel', model: data);
+            }
+          },
+        ));
   }
 }

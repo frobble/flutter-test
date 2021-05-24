@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app2/masterslaveprovider.dart';
 import 'package:flutter_app2/service/api.dart';
 import 'package:flutter_app2/service/convertToTimeString.dart';
 import 'package:flutter_app2/weekly.dart';
@@ -7,16 +8,21 @@ import 'package:flutter_app2/weekly.dart';
 import 'model/timesheet.dart';
 
 class Weeklist extends StatefulWidget {
-  Weeklist({Key key, this.title}) : super(key: key);
+  MasterSlaveProvider model;
+
+  Weeklist({Key key, this.title, this.model}) : super(key: key);
   final String title;
 
   @override
-  _WeeklistState createState() => _WeeklistState();
+  _WeeklistState createState() => _WeeklistState(model);
 }
 
 class _WeeklistState extends State<Weeklist> {
   Future<List<Timesheet>> data;
   String _token;
+  MasterSlaveProvider masterSlaveProvider;
+
+  _WeeklistState(this.masterSlaveProvider);
 
   void _incrementCounter() {
     setState(() {});
@@ -24,7 +30,8 @@ class _WeeklistState extends State<Weeklist> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+
+
 
     return Scaffold(
       drawer: buildDrawer(context),
@@ -151,7 +158,7 @@ class _WeeklistState extends State<Weeklist> {
             ],
           ),
           onTap: () {
-            navigateToWeek(snapshot.data[index]);
+            navigateToWeek(snapshot.data[index], context);
           },
           enabled: true,
           leading: buildFrontIcon((snapshot.data[index])),
@@ -176,14 +183,9 @@ class _WeeklistState extends State<Weeklist> {
         ));
   }
 
-  navigateToWeek(Timesheet s) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => Weekly(
-                week: s,
-              )),
-    );
+  navigateToWeek(Timesheet s, BuildContext c) {
+     masterSlaveProvider.select(s, c);
+
   }
 
   final items = List<String>.generate(10000, (i) => "Item $i");

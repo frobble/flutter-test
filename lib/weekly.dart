@@ -25,15 +25,13 @@ class _Weekly extends State<Weekly> {
         title: Text("2021 KW ${widget.week.weekOfYear} (${convertToTimeString(widget.week.hours)}h)" ),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: buildWeekList(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
