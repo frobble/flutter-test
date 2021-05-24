@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app2/model/timesheet.dart';
+import 'package:flutter_app2/service/convertToTimeString.dart';
 
 class Weekly extends StatefulWidget {
   Weekly({Key key, this.week}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final int week;
+  final Timesheet week;
 
   @override
   _Weekly createState() => _Weekly();
@@ -21,22 +13,16 @@ class Weekly extends StatefulWidget {
 class _Weekly extends State<Weekly> {
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text("Week " + widget.week.toString()),
+        title: Text("2021 KW ${widget.week.weekOfYear} (${convertToTimeString(widget.week.hours)}h)" ),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -72,6 +58,7 @@ class WeekTable extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: DataTable(
+          headingRowColor: MaterialStateColor.resolveWith((states) {return Colors.blueAccent;},),
           sortAscending: false,
           showCheckboxColumn: true,
           checkboxHorizontalMargin: 1100,
@@ -79,20 +66,17 @@ class WeekTable extends StatelessWidget {
           columns: const <DataColumn>[
             DataColumn(
               label: Text(
-                'Kunde',
-                style: TextStyle(fontStyle: FontStyle.italic),
+                'Aktivität/Kunde (Projekt)',
               ),
             ),
             DataColumn(
               label: Text(
                 'Arbeitszeit',
-                style: TextStyle(fontStyle: FontStyle.italic),
               ),
             ),
             DataColumn(
               label: Text(
                 'Beschreibung',
-                style: TextStyle(fontStyle: FontStyle.italic),
               ),
             ),
           ],

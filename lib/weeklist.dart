@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app2/service/api.dart';
+import 'package:flutter_app2/service/convertToTimeString.dart';
 import 'package:flutter_app2/weekly.dart';
 
 import 'model/timesheet.dart';
@@ -69,7 +71,7 @@ class _WeeklistState extends State<Weeklist> {
           ListTile(
             title: Text('Logout'),
             leading: Icon(Icons.exit_to_app_outlined),
-             onTap: () {
+            onTap: () {
               Navigator.pop(context);
               // Update the state of the app.
               // ...
@@ -78,26 +80,22 @@ class _WeeklistState extends State<Weeklist> {
           ListTile(
             title: Text('Stundenzettel'),
             leading: Icon(Icons.home),
-            onTap: () {
-            },
+            onTap: () {},
           ),
           ListTile(
             title: Text('Monatsübersicht'),
             leading: Icon(Icons.calendar_today),
-            onTap: () {
-            },
+            onTap: () {},
           ),
           ListTile(
             title: Text('Aufträge'),
             leading: Icon(Icons.cases_sharp),
-            onTap: () {
-            },
+            onTap: () {},
           ),
           ListTile(
             title: Text('Urlaubsanträge'),
             leading: Icon(Icons.holiday_village),
-            onTap: () {
-            },
+            onTap: () {},
           ),
           ListTile(
             title: Text('Überprüfen'),
@@ -107,8 +105,7 @@ class _WeeklistState extends State<Weeklist> {
           ListTile(
             title: Text('Einstellungen'),
             leading: Icon(Icons.settings),
-            onTap: () {
-            },
+            onTap: () {},
           ),
         ],
       ),
@@ -136,19 +133,6 @@ class _WeeklistState extends State<Weeklist> {
   }
 
   Widget buildWeekTile(AsyncSnapshot<List<Timesheet>> snapshot, int index) {
-    var time = snapshot.data[index].hours.floor();
-    var mins =
-        (snapshot.data[index].hours - snapshot.data[index].hours.floor()) *
-            100 *
-            6 /
-            10;
-    // Container(
-    //   foregroundDecoration: BoxDecoration(
-    //     color: Colors.grey,
-    //     backgroundBlendMode: BlendMode.saturation,
-    //   ),
-    //   child: child,
-    // )
     return Opacity(
       opacity: snapshot.data[index].released ? 0.5 : 1,
       child: ListTile(
@@ -159,7 +143,7 @@ class _WeeklistState extends State<Weeklist> {
               Text("Arbeitszeit:"),
               SizedBox(width: 5),
               Text(
-                "$time:${mins.floor()}h,",
+                "${convertToTimeString(snapshot.data[index].hours)}h,",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 5),
@@ -167,7 +151,7 @@ class _WeeklistState extends State<Weeklist> {
             ],
           ),
           onTap: () {
-            blubb(index);
+            navigateToWeek(snapshot.data[index]);
           },
           enabled: true,
           leading: buildFrontIcon((snapshot.data[index])),
@@ -192,10 +176,13 @@ class _WeeklistState extends State<Weeklist> {
         ));
   }
 
-  blubb(int index) {
+  navigateToWeek(Timesheet s) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Weekly(week: index)),
+      MaterialPageRoute(
+          builder: (context) => Weekly(
+                week: s,
+              )),
     );
   }
 
@@ -206,16 +193,7 @@ class _WeeklistState extends State<Weeklist> {
     return Future.value(dataWeek());
   }
 
-  List<Timesheet> dataWeek() {
-    return List.generate(
-        21,
-        (i) => Timesheet(
-            year: 2021,
-            startOfWeek: "${i * 7}.06",
-            hours: 10 + i * 0.05,
-            weekOfYear: i,
-            released: (i > 3)));
-  }
+
 
   @override
   void initState() {

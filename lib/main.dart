@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app2/weeklist.dart';
+import 'package:flutter_app2/weekly.dart';
 
 //import 'dart:html' as html;
 //import 'package:http/http.dart' as http;
@@ -20,7 +21,17 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
         visualDensity: VisualDensity.standard,
       ),
-      home: Weeklist(title: 'Stundenzettel'),
+      home: _buildLayout(),
+    );
+  }
+
+
+  Widget _buildLayout() {
+    return Row(
+      children: [
+        Flexible(child: Weeklist(title: 'Stundenzettel')),
+        Flexible(child: Weekly(week: null)),
+      ],
     );
   }
 }
