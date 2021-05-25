@@ -12,17 +12,16 @@ class Weekly extends StatefulWidget {
 
 class _Weekly extends State<Weekly> {
   void _incrementCounter() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text("2021 KW ${widget.week.weekOfYear} (${convertToTimeString(widget.week.hours)}h)" ),
+        title: Text(
+            "2021 KW ${widget.week.weekOfYear} (${convertToTimeString(widget.week.hours)}h)"),
       ),
       body: Center(
         child: buildWeekList(),
@@ -36,19 +35,18 @@ class _Weekly extends State<Weekly> {
   }
 
   Container buildWeekList() {
-    return Container(child: WeekTable());
+    return Container(child: WeekTable(weekOfYear: widget.week.weekOfYear));
   }
 
-  blubb() {
-    print('Hello');
-  }
 
   final items = List<String>.generate(7, (i) => "Day $i");
 }
 
 /// This is the stateless widget that the main application instantiates.
 class WeekTable extends StatelessWidget {
-  const WeekTable({Key key}) : super(key: key);
+  final int weekOfYear;
+
+  const WeekTable({Key key, this.weekOfYear}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +54,20 @@ class WeekTable extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: DataTable(
-          headingRowColor: MaterialStateColor.resolveWith((states) {return Colors.blueAccent;},),
+          headingRowColor: MaterialStateColor.resolveWith(
+            (states) {
+              return Colors.blueAccent;
+            },
+          ),
           sortAscending: false,
-          showCheckboxColumn: true,
-          checkboxHorizontalMargin: 1100,
           sortColumnIndex: 0,
           columns: const <DataColumn>[
             DataColumn(
-              label: Text(
-                'Aktivität/Kunde (Projekt)',
+
+              label: Center(
+                child: Text(
+                  'Aktivität', ///Kunde (Projekt)
+                ),
               ),
             ),
             DataColumn(
@@ -85,7 +88,10 @@ class WeekTable extends StatelessWidget {
               cells: <DataCell>[
                 DataCell(Text(data()[index].name)),
                 DataCell(Text(data()[index].hours.toString() + "h")),
-                DataCell(Text('Row $index', style: TextStyle(fontSize: 20))),
+                DataCell(Column(mainAxisSize: MainAxisSize.max, children: [
+                  Text(
+                      'Row $index $weekOfYear asdf asdf asfd asdf l a alsd fjl alsdkfjlaskd flskdfjla ksj  asdlkj asd lksdfj ')
+                ])),
               ],
             ),
           ),
@@ -102,8 +108,6 @@ class WeekTable extends StatelessWidget {
     });
   }
 }
-
-
 
 List<WeekDataItem> data() {
   return List.generate(
