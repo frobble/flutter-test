@@ -26,11 +26,7 @@ class _Weekly extends State<Weekly> {
       body: Center(
         child: buildWeekList(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+
     );
   }
 
