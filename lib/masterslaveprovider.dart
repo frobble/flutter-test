@@ -32,7 +32,7 @@ class MasterSlaveProvider extends ChangeNotifier {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                Weekly(week: s,)),
+                Weekly(week: s)),
       );
     }
 
